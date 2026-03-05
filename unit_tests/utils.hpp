@@ -1,21 +1,13 @@
 #include <vector>
 #include <queue>
 #include <optional>
+#include "tree_node.hpp"
 
-// Your node
-class TreeNode {
-public:
-    int m_val;
-    TreeNode* left = nullptr;
-    TreeNode* right = nullptr;
-
-    TreeNode(int val) : m_val(val), left(nullptr), right(nullptr) {}
-};
 
 // Build from level-order array with nulls.
 // Example:
 //   buildTree({1, 2, 3, std::nullopt, 4, std::nullopt, 5});
-TreeNode* buildTree(const std::vector<std::optional<int>>& levelOrder) {
+inline TreeNode* buildTree(const std::vector<std::optional<int>>& levelOrder) {
     if (levelOrder.empty() || !levelOrder[0].has_value()) {
         return nullptr;
     }
@@ -47,8 +39,17 @@ TreeNode* buildTree(const std::vector<std::optional<int>>& levelOrder) {
     return root;
 }
 
+inline TreeNode* buildTreeIndexed(const std::vector<std::optional<int>>& a, std::size_t i = 0) {
+    if (i >= a.size() || !a[i].has_value()) return nullptr;
+
+    TreeNode* root = new TreeNode(a[i].value());
+    root->left  = buildTreeIndexed(a, 2 * i + 1);
+    root->right = buildTreeIndexed(a, 2 * i + 2);
+    return root;
+}
+
 // Clean-up helper (useful in unit tests)
-void deleteTree(TreeNode* root) {
+inline void deleteTree(TreeNode* root) {
     if (!root) return;
     deleteTree(root->left);
     deleteTree(root->right);

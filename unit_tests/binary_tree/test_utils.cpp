@@ -99,3 +99,137 @@ TEST(TreeBuilder, BuildsBiggerTree_LevelOrderWithNulls) {
 
     deleteTree(root);
 }
+
+// TreeBuilder basic shape tests (each case tested separately)
+
+TEST(TreeBuilder, BuildsEmptyTree_ReturnsNullptr) {
+    // 1) empty tree
+    TreeNode* root = buildTree({});
+    EXPECT_EQ(root, nullptr);
+    // no deleteTree needed (nullptr ok, but safe either way)
+    deleteTree(root);
+}
+
+TEST(TreeBuilder, BuildsOnlyRoot) {
+    // 2) only root
+    TreeNode* root = buildTree({1});
+
+    ASSERT_NE(root, nullptr);
+    EXPECT_EQ(root->m_val, 1);
+    EXPECT_EQ(root->left, nullptr);
+    EXPECT_EQ(root->right, nullptr);
+
+    deleteTree(root);
+}
+
+TEST(TreeBuilder, BuildsRootWithTwoChildren) {
+    // 3) root and two children
+    //     1
+    //   /   \
+    //  2     3
+    TreeNode* root = buildTree({1, 2, 3});
+
+    ASSERT_NE(root, nullptr);
+    EXPECT_EQ(root->m_val, 1);
+
+    ASSERT_NE(root->left, nullptr);
+    EXPECT_EQ(root->left->m_val, 2);
+    EXPECT_EQ(root->left->left, nullptr);
+    EXPECT_EQ(root->left->right, nullptr);
+
+    ASSERT_NE(root->right, nullptr);
+    EXPECT_EQ(root->right->m_val, 3);
+    EXPECT_EQ(root->right->left, nullptr);
+    EXPECT_EQ(root->right->right, nullptr);
+
+    deleteTree(root);
+}
+
+TEST(TreeBuilder, BuildsSkewedLeft) {
+    // 4) skewed left
+    //
+    //     1
+    //    /
+    //   2
+    //  /
+    // 3
+    ///
+    //4
+    //
+    // Indices (heap-style):
+    // 1 at 0
+    // 2 at 1
+    // 3 at 3
+    // 4 at 7
+    //
+    // vector size must be >= 8
+    TreeNode* root = buildTree({
+        1,                 // 0
+        2, std::nullopt,   // 1,2
+        3, std::nullopt,  // 3,4,5,6
+        4,std::nullopt                  // 7
+    });
+
+    ASSERT_NE(root, nullptr);
+    EXPECT_EQ(root->m_val, 1);
+    ASSERT_NE(root->left, nullptr);
+    EXPECT_EQ(root->left->m_val, 2);
+    EXPECT_EQ(root->right, nullptr);
+
+    ASSERT_NE(root->left->left, nullptr);
+    EXPECT_EQ(root->left->left->m_val, 3);
+    EXPECT_EQ(root->left->right, nullptr);
+
+    ASSERT_NE(root->left->left->left, nullptr);
+    EXPECT_EQ(root->left->left->left->m_val, 4);
+
+    // leaf
+    EXPECT_EQ(root->left->left->left->left, nullptr);
+    EXPECT_EQ(root->left->left->left->right, nullptr);
+
+    deleteTree(root);
+}
+
+//Tree build with different function, using an array-index approach
+TEST(TreeBuilder, BuildsSkewedRight) {
+    // 5) skewed right
+    // 1
+    //  \
+    //   2
+    //    \
+    //     3
+    //      \
+    //       4
+    //
+    // level-order with nulls to force "right only":
+    // idx: 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14
+    // val: 1, n, 2, n, n, n, 3, n, n, n, n, n, n, n, 4
+    TreeNode* root = buildTreeIndexed({
+        1,
+        std::nullopt, 2,
+        std::nullopt, std::nullopt, std::nullopt, 3,
+        std::nullopt, std::nullopt, std::nullopt, std::nullopt,
+        std::nullopt, std::nullopt, std::nullopt, 4
+    });
+
+    ASSERT_NE(root, nullptr);
+    EXPECT_EQ(root->m_val, 1);
+
+    EXPECT_EQ(root->left, nullptr);
+    ASSERT_NE(root->right, nullptr);
+    EXPECT_EQ(root->right->m_val, 2);
+
+    EXPECT_EQ(root->right->left, nullptr);
+    ASSERT_NE(root->right->right, nullptr);
+    EXPECT_EQ(root->right->right->m_val, 3);
+
+    EXPECT_EQ(root->right->right->left, nullptr);
+    ASSERT_NE(root->right->right->right, nullptr);
+    EXPECT_EQ(root->right->right->right->m_val, 4);
+
+    // leaf checks
+    EXPECT_EQ(root->right->right->right->left, nullptr);
+    EXPECT_EQ(root->right->right->right->right, nullptr);
+
+    deleteTree(root);
+}
