@@ -13,7 +13,7 @@ int dfsClosestValue(TreeNode* root,int target, int bestSoFar) {
         if (runnerVal<target) {
             runner=runner->right;
         }
-        else if (runnerVal<target) {
+        else if (runnerVal>target) {
             runner=runner->left;
         }
         else break;
@@ -22,7 +22,8 @@ int dfsClosestValue(TreeNode* root,int target, int bestSoFar) {
 }
 
 int closestValue(TreeNode* root,int target) {
-    dfsClosestValue(root,target,root->m_val);
+    return dfsClosestValue(root,target,root->m_val);
+
 }
 
 
