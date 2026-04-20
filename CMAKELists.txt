@@ -15,6 +15,33 @@ option(ENABLE_DEV_MAIN "Build dev_main executable (experiments)" ON)
 
 add_library(core_lib STATIC
         src/core_lib.cpp
+        src/nary_tree/nary_node.cpp
+        src/queries/kth_ancestor_of_tree_node.cpp
+        src/binary_tree/branch_sum.cpp
+        src/binary_tree/count_complete_tree_nodes.cpp
+        src/binary_tree/node_depths.cpp
+        src/binary_tree/diameter.cpp
+        src/binary_tree/number_of_full_nodes.cpp
+        src/binary_tree/number_of_half_nodes.cpp
+        src/binary_tree/zigzagLevelOrder.cpp
+        src/binary_tree/maximum_sum_level_of_binary_tree.cpp
+        src/binary_tree/is_same_tree.cpp
+        src/binary_tree/successor.cpp
+        src/binary_tree/corresponding_node_of_bt_in_clone.cpp
+        src/binary_tree/invert_binary_tree.cpp
+        src/binary_tree/merge_two_binary_trees.cpp
+        src/binary_tree/symmetrical_tree.cpp
+        src/binary_tree/deepest_node_of_binary_tree.cpp
+        src/binary_search_tree/find_closest_value.cpp
+        src/binary_search_tree/next_greater_number.cpp
+        src/binary_search_tree/is_valid_bst.cpp
+        src/binary_search_tree/range_sum_of_bst.cpp
+
+        src/traversal/inorder.cpp
+        src/traversal/preorder.cpp
+        src/traversal/level_order.cpp
+        src/binary_search_tree/mode.cpp
+
         # add more .cpp here as project grows
 )
 
