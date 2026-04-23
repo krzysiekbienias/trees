@@ -55,3 +55,44 @@ inline void deleteTree(TreeNode* root) {
     deleteTree(root->right);
     delete root;
 }
+
+
+inline void dumpTree(TreeNode* root, std::string prefix = "") {
+    if (!root) {
+        std::cout << prefix << "nullptr" << std::endl;
+        return;
+    }
+    std::cout << prefix << root->m_val << std::endl;
+    dumpTree(root->left, prefix + "   L:  ");
+    dumpTree(root->right, prefix + "   R:  ");
+}
+
+inline void printTreeFancy(TreeNode* node, std::string prefix = "", bool isLeft = false, bool isRoot = true) {
+    if (!node) return;
+
+    std::cout << prefix;
+    if (!isRoot) {
+        std::cout << (isLeft ? "├── " : "└── ");
+    }
+    std::cout << node->m_val << std::endl;
+
+    // Obliczamy wcięcie dla kolejnego poziomu
+    std::string nextPrefix = prefix + (isRoot ? "" : (isLeft ? "│   " : "    "));
+
+    // Rysujemy dzieci tylko, jeśli istnieje chociaż jedno
+    if (node->left || node->right) {
+        if (node->left) {
+            printTreeFancy(node->left, nextPrefix, true, false);
+        } else {
+            // Wypisujemy pusty lewy węzeł, żeby pokazać "dziurę"
+            std::cout << nextPrefix << "├── [null]" << std::endl;
+        }
+
+        if (node->right) {
+            printTreeFancy(node->right, nextPrefix, false, false);
+        } else {
+            // Wypisujemy pusty prawy węzeł
+            std::cout << nextPrefix << "└── [null]" << std::endl;
+        }
+    }
+}
