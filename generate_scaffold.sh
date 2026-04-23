@@ -35,12 +35,19 @@ create_if_missing() {
 }
 
 create_if_missing "$CPP_FILE" \
-$'#include <string>\n#include <vector>\n\n'
+$'#include <string>
+#include <vector>
+#include "tree_node.hpp"'
+
 
 create_if_missing "$HEADER_FILE" \
-$'#pragma once\n\n#include <string>\n#include <vector>\n\n'
+$'#pragma once
+#include <string>
+#include <vector>
+#include "tree_node.hpp"'
 
 create_if_missing "$TEST_FILE" \
 "#include \"${FOLDER}/${NAME}.hpp\"
-#include <gtest/gtest.h>"
+#include <gtest/gtest.h>
+#include ../unit_tests/utils.hpp
 
