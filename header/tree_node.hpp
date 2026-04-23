@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 
 class  TreeNode {
 public:
@@ -13,13 +14,12 @@ public:
 class  TreeNodeWithParent {
 public:
     int m_val;
-    TreeNode* left=nullptr;
-    TreeNode* right=nullptr;
-    TreeNode* parent=nullptr;
+    TreeNodeWithParent* left=nullptr;
+    TreeNodeWithParent* right=nullptr;
+    TreeNodeWithParent* parent=nullptr;
 
     explicit TreeNodeWithParent();
     explicit TreeNodeWithParent(int val):m_val(val),left(nullptr),right(nullptr),parent(nullptr){};
 };
-
 
 
