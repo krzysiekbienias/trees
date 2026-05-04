@@ -16,7 +16,7 @@ int dfsClosestValue(TreeNode* root,int target, int bestSoFar) {
         else if (runnerVal>target) {
             runner=runner->left;
         }
-        else break;
+        else break; // exact match found, no closer value possible
     }
     return bestSoFar;
 }
